@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0"
+	xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
+	xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Language="en-US" Id="shadeview" Version="2.0.0" Publisher="awwsky" />
+		<DisplayName>ShadeView - Shader Ultimate Helper</DisplayName>
+		<Description xml:space="preserve">ShadeView - First complete HLSL/GLSL [and ShaderLab] support for Visual Studio Code.</Description>
+		<Tags>
+			snippet,UnityShader,Shader,Shaderlab,HLSL,GLSL,Unity,pixelshader,vertexshader,post-processing,
+			compute, surface, vfx, ShaderView, Shade,
+			ShadeView,shaderlab,__ext_shader,__ext_cginc,__ext_glslinc,__ext_hlsl,__ext_cg,__ext_compute,__ext_vfxshader,__ext_surfshader,__ext_std,unity
+		</Tags>
+		<Categories>Programming Languages</Categories>
+		<GalleryFlags>Public</GalleryFlags>
+
+		<Properties>
+			<Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.75.0" />
+			<Property Id="Microsoft.VisualStudio.Code.ExtensionDependencies" Value="" />
+			<Property Id="Microsoft.VisualStudio.Code.ExtensionPack" Value="" />
+			<Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace" />
+			<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
+			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+		</Properties>
+
+		<Icon>extension/images/icon.png</Icon>
+	</Metadata>
+	<Installation>
+		<InstallationTarget Id="Microsoft.VisualStudio.Code" />
+	</Installation>
+	<Dependencies />
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json"
+			Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md"
+			Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog"
+			Path="extension/CHANGELOG.md" Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/icon.png"
+			Addressable="true" />
+	</Assets>
+</PackageManifest>
