@@ -9,10 +9,7 @@ on:
       version:
         description: 'Version number (e.g., 1.0.0)'
         required: true
-      prefix:
-        description: 'Custom prefix for the VSIX file name'
-        required: true
-        default: 'my-extension'
+      # Removed 'prefix' from inputs
 
 jobs:
   package-release-artifact:
@@ -31,17 +28,23 @@ jobs:
         run: |
           echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
 
+      - name: Set Prefix (Editable within the script)
+        id: set-prefix
+        run: |
+          PREFIX="shadeview2"
+          echo "prefix=$PREFIX" >> $GITHUB_OUTPUT
+
       - name: Create ZIP archive and Rename
         run: |
-          zip -r "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" ./* -x "*.git*"
-          mv "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
+          zip -r "${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" ./* -x "*.git*"
+          mv "${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" "${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
         shell: bash
 
       - name: Upload VSIX as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
-          path: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          name: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          path: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
           retention-days: 5
 
       - name: Create Tag and Release (Combined)
@@ -51,10 +54,10 @@ jobs:
 
           gh release create v${{ steps.determine-version.outputs.version }} \
             --title "Release v${{ steps.determine-version.outputs.version }}" \
-            --notes "Release of version ${{ steps.determine-version.outputs.version }}.\nVSIX package: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --notes "Release of version ${{ steps.determine-version.outputs.version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix" \
             --draft=false \
             --prerelease=false \
-            "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
+            "${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
