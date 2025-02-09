@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.1"
+<PackageManifest Version="2.0.1.1"
 	xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
 	xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Language="en-US" Id="shadeview" Version="2.0.1" Publisher="awwsky" />
+		<Identity Language="en-US" Id="shadeview" Version="2.0.1.1" Publisher="awwsky" />
 		<DisplayName>ShadeView 2 - Ultimate Shader Tool</DisplayName>
 		<Description xml:space="preserve">ShadeView 2 - First complete HLSL/GLSL [ShaderLab] and Compute Shader support for Visual Studio Code.</Description>
 		<Tags>
