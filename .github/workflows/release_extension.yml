@@ -29,7 +29,6 @@ jobs:
       - name: Determine Version
         id: determine-version
         run: |
-          # Always use the input version, regardless of the trigger.
           echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
 
       - name: Create ZIP archive and Rename
