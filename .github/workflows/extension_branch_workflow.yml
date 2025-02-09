@@ -1,42 +1,35 @@
-name: Create Extension Branch
+name: Create New Branch with Custom Name
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch_name:
-        description: 'extension'
-        required: true
-      source_folder:
-        description: 'extension'
-        required: true
-
-env:
-  TARGET_BRANCH: ${{ github.event.inputs.branch_name }}
-  SOURCE_FOLDER: ${{ github.event.inputs.source_folder }}
+  push:
+    branches:
+      - 'main'
 
 jobs:
   create-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      # Checkout the current code
+      - name: Checkout the code
+        uses: actions/checkout@v3
 
-      - name: Create new Extension Branch
+      # Set up GitHub Actions User
+      - name: Set up Git config
         run: |
-          git checkout --orphan $TARGET_BRANCH
-          git rm -rf .
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
 
-      - name: Copy files from Extension Folder
+      - name: Create Extension Branch
         run: |
-          mkdir -p temp_copy
-          cp -r $SOURCE_FOLDER/* temp_copy/
-          mv temp_copy/* .
-          rm -rf temp_copy
+          BRANCH_NAME="extension"
+          git checkout -b $BRANCH_NAME
+
+      - name: Copy files Extension Folder to Branch
+        run: |
+          cp -r .extension/* ./
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
           git add .
-          git commit -m "Create new branch $TARGET_BRANCH with files from $SOURCE_FOLDER"
-          git push origin $TARGET_BRANCH
+          git commit -m "Add files from target folder to $BRANCH_NAME"
+          git push origin $BRANCH_NAME
