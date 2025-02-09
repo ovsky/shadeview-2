@@ -1,25 +1,28 @@
 {
   "name": "shadeview",
   "displayName": "ShadeView",
-  "description": "Visual Studio Code Plugin for Unity Shaderlab programming",
-  "version": "2.0.0",
+  "description": "Visual Studio Code Plugin for HLSL/GLSL/Compute Shader [ShaderLab] programming",
+  "version": "2.0.1",
   "publisher": "awwsky",
-  "icon": "images/icon.png",
+  "icon": "images/icon_512.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ovsky/ShadeView.git"
+    "url": "https://github.com/ovsky/shadeview-2.git"
   },
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
+    "Extension Packs",
+    "Language Packs",
+    "Visualization",
+    "Programming Languages",
     "Linters",
     "Snippets",
     "Formatters",
     "Debuggers",
     "Testing",
-    "Other",
-    "Programming Languages"
+    "Other"
   ],
   "activationEvents": [],
   "main": "./out/src/main",
@@ -48,8 +51,14 @@
       {
         "id": "UnityShader",
         "aliases": [
+          "ShadeView",
+          "ShaderLab",
           "Shaderlab",
-          "shaderlab"
+          "shaderlab",
+          "HLSL/GLSL/Compute",
+          "UnityShader",
+          "ShaderView",
+          "Shader"
         ],
         "extensions": [
           ".shader",
