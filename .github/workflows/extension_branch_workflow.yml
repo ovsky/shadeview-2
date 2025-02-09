@@ -1,43 +1,42 @@
 name: Create Extension Branch
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: 'extension'
+        required: true
+      source_folder:
+        description: 'extension'
+        required: true
+
+env:
+  TARGET_BRANCH: ${{ github.event.inputs.branch_name }}
+  SOURCE_FOLDER: ${{ github.event.inputs.source_folder }}
 
 jobs:
   create-branch:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up GitHub Actions User
+      - name: Create new Extension Branch
+        run: |
+          git checkout --orphan $TARGET_BRANCH
+          git rm -rf .
+
+      - name: Copy files from Extension Folder
+        run: |
+          mkdir -p temp_copy
+          cp -r $SOURCE_FOLDER/* temp_copy/
+          mv temp_copy/* .
+          rm -rf temp_copy
+
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-      - name: Create new Extension Branch
-        env:
-          TARGET_FOLDER: "extension"
-          BRANCH_NAME: "extension"
-        run: |
-          if [ -d "$TARGET_FOLDER" ] && [ "$(ls -A $TARGET_FOLDER)" ]; then
-            # Create an orphan branch (fresh start)
-            git checkout --orphan "$BRANCH_NAME"
-
-            # Remove all files from the new branch
-            git rm -rf .
-
-            # Move contents of the folder to root
-            mv "$TARGET_FOLDER"/* ./
-
-            # Commit and push
-            git add .
-            git commit -m "Created new branch from $TARGET_FOLDER with unpacked contents"
-            git push --force-with-lease origin "$BRANCH_NAME"
-          else
-            echo "Folder $TARGET_FOLDER does not exist or is empty. Exiting."
-            exit 1
-          fi
+          git config --global user.email "actions@github.com"
+          git add .
+          git commit -m "Create new branch $TARGET_BRANCH with files from $SOURCE_FOLDER"
+          git push origin $TARGET_BRANCH
