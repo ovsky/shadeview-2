@@ -8,7 +8,7 @@ on:
     inputs:
       version:
         description: 'Version number (e.g., 1.0.0)'
-        required: true  # Version is *always* required now
+        required: true
       prefix:
         description: 'Custom prefix for the VSIX file name'
         required: true
@@ -34,8 +34,8 @@ jobs:
 
       - name: Create ZIP archive and Rename
         run: |
-          zip -r ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ./* -x "*.git*"
-          mv ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          zip -r "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" ./* -x "*.git*"
+          mv "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip" "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
         shell: bash
 
       - name: Upload VSIX as Artifact
@@ -55,7 +55,7 @@ jobs:
             --notes "Release of version ${{ steps.determine-version.outputs.version }}.\nVSIX package: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix" \
             --draft=false \
             --prerelease=false \
-            ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+            "${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
