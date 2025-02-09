@@ -30,11 +30,16 @@ jobs:
           PREFIX="my-custom-extension"
           echo "prefix=$PREFIX" >> $GITHUB_OUTPUT
 
-      - name: Get Latest Tag
+      - name: Get Latest Tag and Handle Initial State
         id: get-latest-tag
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+          if [ -z "$LATEST_TAG" ]; then
+            # No tags exist yet. Start with v0.0.0
+            echo "latest_tag=v0.0.0" >> $GITHUB_OUTPUT
+          else
+            echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          fi
         shell: bash
 
       - name: Increment Version
@@ -44,7 +49,18 @@ jobs:
           MAJOR=${VERSION_PARTS[0]#v}
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
+
+          # Increment the PATCH version, handle carry-over
           PATCH=$((PATCH + 1))
+          if [[ $PATCH -ge 1000 ]]; then # Or any other reasonable limit
+              PATCH=0
+              MINOR=$((MINOR + 1))
+              if [[ $MINOR -ge 1000 ]]; then
+                MINOR=0
+                MAJOR=$((MAJOR + 1))
+              fi
+          fi
+
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
         shell: bash
@@ -69,21 +85,38 @@ jobs:
 
       - name: Create Tag and Release (Combined)
         run: |
-          # Check if the tag already exists locally or remotely
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
-          if git rev-parse "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --tags --exit-code origin "$TAG_NAME" > /dev/null 2>&1; then
-            echo "::warning::Tag $TAG_NAME already exists (locally or remotely). Skipping tag and release creation."
-          else
-            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-            git push origin "$TAG_NAME"
+          # Robust check for existing tag (local and remote)
+          if git rev-parse --quiet --verify "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "$TAG_NAME" > /dev/null 2>&1; then
+            echo "::warning::Tag $TAG_NAME already exists.  Attempting to find a unique tag..."
 
-            gh release create "$TAG_NAME" \
-              --title "Release $TAG_NAME" \
-              --notes "Release of version ${{ steps.increment-version.outputs.new_version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
-              --draft=false \
-              --prerelease=false \
-              "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
+            # Find the next available tag
+            i=1
+            while true; do
+              NEXT_PATCH=$((PATCH + i))
+              NEXT_TAG_NAME="v$MAJOR.$MINOR.$NEXT_PATCH"
+              if ! git rev-parse --quiet --verify "$NEXT_TAG_NAME" >/dev/null 2>&1 && ! git ls-remote --exit-code --tags origin "$NEXT_TAG_NAME" > /dev/null 2>&1; then
+                TAG_NAME="$NEXT_TAG_NAME"
+                break
+              fi
+              i=$((i + 1))
+              if [[ $i -gt 100 ]]; then  # Prevent infinite loop (adjust as needed)
+                echo "::error::Could not find a unique tag after 100 attempts.  Aborting."
+                exit 1
+              fi
+            done
+            echo "::notice::Using tag: $TAG_NAME"
           fi
+
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          git push origin "$TAG_NAME"
+
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --notes "Release of version ${{ steps.increment-version.outputs.new_version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --draft=false \
+            --prerelease=false \
+            "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
