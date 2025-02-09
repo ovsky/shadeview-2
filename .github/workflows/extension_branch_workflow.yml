@@ -40,3 +40,4 @@ jobs:
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
+          fi
