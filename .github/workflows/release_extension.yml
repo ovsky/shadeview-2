@@ -46,15 +46,8 @@ jobs:
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
 
+          # Increment ONLY the PATCH version
           PATCH=$((PATCH + 1))
-          if [[ $PATCH -ge 1000 ]]; then
-              PATCH=0
-              MINOR=$((MINOR + 1))
-              if [[ $MINOR -ge 1000 ]]; then
-                MINOR=0
-                MAJOR=$((MAJOR + 1))
-              fi
-          fi
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
@@ -77,40 +70,24 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
+
       - name: Create Tag and Release (Combined)
         run: |
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
           # Robust check for existing tag (local and remote)
           if git rev-parse --quiet --verify "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "$TAG_NAME" > /dev/null 2>&1; then
-            echo "::warning::Tag $TAG_NAME already exists.  Attempting to find a unique tag..."
+            echo "::warning::Tag $TAG_NAME already exists. Skipping tag and release creation."
+          else
+            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+            git push origin "$TAG_NAME"
 
-            # Find the next available tag
-            i=1
-            while true; do
-              NEXT_PATCH=$((PATCH + i))
-              NEXT_TAG_NAME="v$MAJOR.$MINOR.$NEXT_PATCH"
-              if ! git rev-parse --quiet --verify "$NEXT_TAG_NAME" >/dev/null 2>&1 && ! git ls-remote --exit-code --tags origin "$NEXT_TAG_NAME" > /dev/null 2>&1; then
-                TAG_NAME="$NEXT_TAG_NAME"
-                break
-              fi
-              i=$((i + 1))
-              if [[ $i -gt 100 ]]; then  # Prevent infinite loop (adjust as needed)
-                echo "::error::Could not find a unique tag after 100 attempts.  Aborting."
-                exit 1
-              fi
-            done
-            echo "::notice::Using tag: $TAG_NAME"
+            gh release create "$TAG_NAME" \
+              --title "Release $TAG_NAME" \
+              --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+              --draft=false \
+              --prerelease=false \
+              "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
           fi
-
-          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-          git push origin "$TAG_NAME"
-
-          gh release create "$TAG_NAME" \
-            --title "Release $TAG_NAME" \
-            --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
-            --draft=false \
-            --prerelease=false \
-            "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
