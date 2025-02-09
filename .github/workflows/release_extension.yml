@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch entire history, including all tags
 
       - name: Get current date
         id: get-date
@@ -33,7 +35,7 @@ jobs:
       - name: Get Latest Tag and Handle Initial State
         id: get-latest-tag
         run: |
-          git fetch --prune --tags
+          # No need for git fetch here, as checkout fetches everything.
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
         shell: bash
@@ -45,10 +47,7 @@ jobs:
           MAJOR=${VERSION_PARTS[0]#v}
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
-
-          # Increment ONLY the PATCH version
           PATCH=$((PATCH + 1))
-
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
         shell: bash
@@ -74,12 +73,9 @@ jobs:
       - name: Create Tag and Release (Combined)
         run: |
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
-
-          # Create tag and push
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
           git push origin "$TAG_NAME"
 
-          # Create release and upload asset
           gh release create "$TAG_NAME" \
             --title "Release $TAG_NAME" \
             --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
