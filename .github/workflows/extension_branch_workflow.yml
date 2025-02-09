@@ -26,7 +26,7 @@ jobs:
 
       - name: Copy files Extension Folder to Branch
         run: |
-          cp -r .extension/* ./
+          cp -r ./extension/* ./
 
       - name: Commit and push changes
         run: |
