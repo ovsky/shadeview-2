@@ -2,7 +2,7 @@
   "name": "shadeview",
   "displayName": "ShadeView",
   "description": "Complete Support for Shader Programming [HLSL/GLSL/Compute]",
-  "version": "2.0.1",
+  "version": "2.0.15",
   "publisher": "awwsky",
   "icon": "images/icon_512.png",
   "repository": {
