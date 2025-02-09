@@ -1,35 +1,42 @@
-name: Create New Branch with Custom Name
+name: Create Extension Branch
 
 on:
   push:
     branches:
-      - 'main'
+      - main
 
 jobs:
   create-branch:
     runs-on: ubuntu-latest
-    steps:
-      # Checkout the current code
-      - name: Checkout the code
-        uses: actions/checkout@v3
 
-      # Set up GitHub Actions User
-      - name: Set up Git config
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up GitHub Actions User
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Create Extension Branch
+      - name: Create new branch from folder
+        env:
+          TARGET_FOLDER: "extension"
+          BRANCH_NAME: "extension"
         run: |
-          BRANCH_NAME="extension"
-          git checkout -b $BRANCH_NAME
-
-      - name: Copy files Extension Folder to Branch
-        run: |
-          cp -r ./extension/* ./
-
-      - name: Commit and push changes
-        run: |
-          git add .
-          git commit -m "Add files from target folder to $BRANCH_NAME"
-          git push --set-upstream origin $BRANCH_NAME
+          if [ -d "$TARGET_FOLDER" ]; then
+            # Create an orphan branch (fresh start)
+            git checkout --orphan "$BRANCH_NAME"
+            # Remove all files from the new branch
+            git rm -rf .
+            # Copy the contents of the target folder into the root of the new branch
+            cp -r "$TARGET_FOLDER"/* .
+            # Remove the empty extension folder
+            rm -rf "$TARGET_FOLDER"
+            # Commit and push
+            git add .
+            git commit -m "Created new branch '$BRANCH_NAME' with contents from folder '$TARGET_FOLDER'"
+            git push origin "$BRANCH_NAME"
+          else
+            echo "Folder $TARGET_FOLDER does not exist. Exiting."
+            exit 1
+          fi
