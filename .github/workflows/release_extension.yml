@@ -1,4 +1,4 @@
-name: Create ShadeView VSIX Auto Build 
+name: Create VSIX, Release, and Artifact (on Main Push - Auto-Increment Version)
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
     inputs:
       prefix:
-        description: 'Extension Prefix'
+        description: 'Custom prefix for the VSIX file name'
         required: true
-        default: 'shadeview-2-autobuild'
+        default: 'my-extension'
 
 jobs:
   package-release-artifact:
@@ -62,22 +62,27 @@ jobs:
           path: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix
           retention-days: 5
 
-      - name: Configure GitHub Actions User
+      - name: Configure Git User
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
 
-      - name: Create Tag and Release
+      - name: Create Tag and Release (Combined)
         run: |
-          git tag -a v${{ steps.increment-version.outputs.new_version }} -m "Release v${{ steps.increment-version.outputs.new_version }}"
-          git push origin v${{ steps.increment-version.outputs.new_version }}
+          # Check if the tag already exists
+          if git rev-parse "v${{ steps.increment-version.outputs.new_version }}" >/dev/null 2>&1; then
+            echo "::warning::Tag v${{ steps.increment-version.outputs.new_version }} already exists. Skipping tag and release creation."
+          else
+            git tag -a v${{ steps.increment-version.outputs.new_version }} -m "Release v${{ steps.increment-version.outputs.new_version }}"
+            git push origin v${{ steps.increment-version.outputs.new_version }}
 
-          gh release create v${{ steps.increment-version.outputs.new_version }} \
-            --title "Release v${{ steps.increment-version.outputs.new_version }}" \
-            --notes "Release of version ${{ steps.increment-version.outputs.new_version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
-            --draft=false \
-            --prerelease=false \
-            "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
+            gh release create v${{ steps.increment-version.outputs.new_version }} \
+              --title "Release v${{ steps.increment-version.outputs.new_version }}" \
+              --notes "Release of version ${{ steps.increment-version.outputs.new_version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+              --draft=false \
+              --prerelease=false \
+              "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
