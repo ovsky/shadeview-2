@@ -19,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch entire history, including all tags
+          fetch-depth: 0
 
       - name: Get current date
         id: get-date
@@ -35,7 +35,6 @@ jobs:
       - name: Get Latest Tag and Handle Initial State
         id: get-latest-tag
         run: |
-          # No need for git fetch here, as checkout fetches everything.
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
         shell: bash
@@ -83,5 +82,5 @@ jobs:
             --prerelease=false \
             "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN is sufficient
         shell: bash
