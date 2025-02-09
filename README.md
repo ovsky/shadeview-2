@@ -9,35 +9,13 @@ The plugin enhances your workflow by bringing advanced features for these langua
 
 Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview
 
-## 🚀 Installation
-
-1. Launch **VSCode**.
-2. Go to the Extensions view **(View > Extensions)**.
-3. Search for the **"ShadeView 2"**.
-4. Install the plugin.
-5. Reload VSCode.
-
-> 🎉 Enjoy! :)
-
-## ⚙️ Instructions
-
-### ⚡ Fast Way:
-
-1. Open a shader file.
-2. From the VSCode bottom bar, where you may see the "Plain Text" label, select **"ShadeView" or "ShadeLab""** as Language Mode.
-
-### 🛠️ Perfect Way:
-
-1. Open a shader file.
-2. Press `CTRL + SHIFT + P` to open the command palette.
-3. Select **"Format Document With..."**.
-4. Select **"Configure Default Formatter"**.
-5. Choose **"ShadeView" or "ShadeLab""** as Language Mode.
-6. Done! 🎊
-
 ## 🌟 Features
 
-![selection](./extension/images/data/selection.png)
+![Preview Shader Realtime](./extension/images/data/shader_preview.png)
+
+> Shader Realtime Preview Feature [Available in Preview Version - WIP]
+
+---
 
 - **🔍 Syntax Highlighting**:  
   Robust syntax highlighting for HLSL,GLSL and Compute Shaders, making it easier to read and navigate shader code. It highlights language-specific keywords, types, functions, and more.
@@ -64,11 +42,45 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadevie
 - **⚙️ Customizable Settings**:  
   Customize the plugin's features to your preferences, including adjusting syntax highlighting, customizing linting rules, or setting up custom code snippets and more.
 
+---
+
 ## 🛠️ Work In Progress (WIP)
 
-- **🔮 Integrated In-Editor GLSL/HLSL Shader Preview**:
+- **🔮 Shader Realtime Preview - Integrated Multi-Language Feature**:
 - Test your shader code directly within Visual Studio Code with an integrated GLSL and HLSL compiler, ensuring your shaders are valid and ready for your graphics pipeline!
-  **Preview:**
-  ![Preview Shader Realtime](https://i.ibb.co/W08rk4P/Screenshot-2024-09-28-203434354453.png)
 
-          Community requested featue! :) Currently hidden, but easy to find and fully available for plugin supporters.
+---
+
+![selection](./extension/images/data/selection.png)
+
+> Documentation Highlight Preview Feature - Explains Every Function
+
+---
+
+## 🚀 Installation
+
+1. Launch **VSCode**.
+2. Go to the Extensions view **(View > Extensions)**.
+3. Search for the **"ShadeView 2"**.
+4. Install the plugin.
+5. Reload VSCode.
+
+> 🎉 Enjoy! :)
+
+## ⚙️ Instructions
+
+### ⚡ Fast Way:
+
+1. Open a shader file.
+2. From the VSCode bottom bar, where you may see the "Plain Text" label, select **"ShadeView" or "ShadeLab""** as Language Mode.
+
+### 🛠️ Perfect Way:
+
+1. Open a shader file.
+2. Press `CTRL + SHIFT + P` to open the command palette.
+3. Select **"Format Document With..."**.
+4. Select **"Configure Default Formatter"**.
+5. Choose **"ShadeView" or "ShadeLab""** as Language Mode.
+6. Done! 🎊
+
+---
