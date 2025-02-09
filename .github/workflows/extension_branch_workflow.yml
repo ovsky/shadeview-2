@@ -27,8 +27,8 @@ jobs:
             # Create an orphan branch (fresh start)
             git checkout --orphan "$BRANCH_NAME"
 
-            # Remove all files from the new branch
-            git rm -rf .
+            # # Remove all files from the new branch
+            # git rm -rf .
 
             # Move contents of the folder to root
             mv $TARGET_FOLDER/* ./
