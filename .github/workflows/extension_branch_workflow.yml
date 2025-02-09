@@ -27,9 +27,6 @@ jobs:
             # Create an orphan branch (fresh start)
             git checkout --orphan "$BRANCH_NAME"
 
-            # # Remove all files from the new branch
-            # git rm -rf .
-
             # Move contents of the folder to root
             mv $TARGET_FOLDER/* ./
 
@@ -37,6 +34,11 @@ jobs:
             git add .
             git commit -m "Created new branch from $TARGET_FOLDER with unpacked contents"
             git push origin "$BRANCH_NAME"
+
+            # Remove all files from the orphan branch
+            git checkout --orphan "$BRANCH_NAME"
+            git rm -rf .
+
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
