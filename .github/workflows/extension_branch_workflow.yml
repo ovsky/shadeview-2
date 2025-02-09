@@ -23,7 +23,7 @@ jobs:
           TARGET_FOLDER: "extension"
           BRANCH_NAME: "extension"
         run: |
-            if [ -d "$TARGET_FOLDER" ]; then
+          if [ -d "$TARGET_FOLDER" ]; then
             # Create an orphan branch (fresh start)
             git checkout --orphan "$BRANCH_NAME"
 
@@ -37,6 +37,6 @@ jobs:
             git add .
             git commit -m "Created new branch from $TARGET_FOLDER with unpacked contents"
             git push origin "$BRANCH_NAME"
-            else
+          else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
