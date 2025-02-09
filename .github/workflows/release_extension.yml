@@ -26,7 +26,7 @@ jobs:
       - name: Set extension name
         id: set_extension_name
         run: |
-          echo "EXTENSION_NAME=ShadeView-2-AutoRelease" >> $GITHUB_ENV
+          echo "EXTENSION_NAME=extension" >> $GITHUB_ENV  # Default name "extension", you can override this in the repository's secrets or elsewhere
 
       - name: Package VSIX extension
         run: |
@@ -50,28 +50,3 @@ jobs:
         with:
           name: ${{ env.EXTENSION_NAME }}-signature
           path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig
-
-      - name: Create Release
-        uses: gh-action/create-release@v1.2
-        with:
-          tag_name: v${{ github.sha }}
-          release_name: Release for ${{ github.sha }}
-          body: "Release created on $(date)"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload VSIX to Release
-        uses: gh-action/upload-release-asset@v1.0
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix
-          asset_name: ${{ env.EXTENSION_NAME }}-${current_date}.vsix
-          asset_content_type: application/zip
-
-      - name: Upload Signature to Release
-        uses: gh-action/upload-release-asset@v1.0
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig
-          asset_name: ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig
-          asset_content_type: application/octet-stream
