@@ -33,13 +33,9 @@ jobs:
       - name: Get Latest Tag and Handle Initial State
         id: get-latest-tag
         run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
-          if [ -z "$LATEST_TAG" ]; then
-            # No tags exist yet. Start with v0.0.0
-            echo "latest_tag=v0.0.0" >> $GITHUB_OUTPUT
-          else
-            echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
-          fi
+          git fetch --prune --tags  # Fetch all tags from remote
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
         shell: bash
 
       - name: Increment Version
@@ -50,9 +46,8 @@ jobs:
           MINOR=${VERSION_PARTS[1]}
           PATCH=${VERSION_PARTS[2]}
 
-          # Increment the PATCH version, handle carry-over
           PATCH=$((PATCH + 1))
-          if [[ $PATCH -ge 1000 ]]; then # Or any other reasonable limit
+          if [[ $PATCH -ge 1000 ]]; then
               PATCH=0
               MINOR=$((MINOR + 1))
               if [[ $MINOR -ge 1000 ]]; then
@@ -86,11 +81,9 @@ jobs:
       - name: Create Tag and Release (Combined)
         run: |
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
-          # Robust check for existing tag (local and remote)
           if git rev-parse --quiet --verify "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "$TAG_NAME" > /dev/null 2>&1; then
             echo "::warning::Tag $TAG_NAME already exists.  Attempting to find a unique tag..."
 
-            # Find the next available tag
             i=1
             while true; do
               NEXT_PATCH=$((PATCH + i))
@@ -100,7 +93,7 @@ jobs:
                 break
               fi
               i=$((i + 1))
-              if [[ $i -gt 100 ]]; then  # Prevent infinite loop (adjust as needed)
+              if [[ $i -gt 100 ]]; then
                 echo "::error::Could not find a unique tag after 100 attempts.  Aborting."
                 exit 1
               fi
