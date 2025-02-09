@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const Shaderlab_1=require("./Shaderlab");class ShaderlabHoverProvider{provideHover(e,r,a){let d=new Shaderlab_1.Shaderlab(e,r);return d.provideHover()}}exports.default=ShaderlabHoverProvider;

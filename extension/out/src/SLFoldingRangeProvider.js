@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.SLFoldingRangeProvider=void 0;const Shaderlab_1=require("./Shaderlab");class SLFoldingRangeProvider{provideFoldingRanges(e,r,d){let o=new Shaderlab_1.Shaderlab(e,null);return o.provideFoldingRanges()}}exports.SLFoldingRangeProvider=SLFoldingRangeProvider;

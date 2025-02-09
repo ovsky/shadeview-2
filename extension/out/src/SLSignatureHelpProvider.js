@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0});const Shaderlab_1=require("./Shaderlab");class SLSignatureHelpProvider{provideSignatureHelp(r,a,e){if(!Shaderlab_1.Shaderlab.IsDisabled(r)){let e=new Shaderlab_1.Shaderlab(r,a);return e.provideSignatureHelp()}}}SLSignatureHelpProvider.triggerChars=["(",","],exports.default=SLSignatureHelpProvider;
