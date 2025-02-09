@@ -3,53 +3,32 @@ name: Create VSIX Release
 on:
   push:
     branches:
-      - main
-
-env:
-  RELEASE_PREFIX: 'shadeview-2-autobuild'
+      - main 
 
 jobs:
-  build:
+  pack-and-rename:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up GitHub Actions User
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+    - name: Set current date
+      id: date
+      run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
-      - name: Create ZIP package
-        run: |
-          # Create a ZIP file of the whole repository
-          zip -r repo-package.zip . 
+    - name: Create ZIP file
+      run: |
+        zip -r repository.zip . -x '.git/*' -x '.github/*'
 
-      - name: Rename ZIP to VSIX
-        run: |
-          # Rename the ZIP file to a VSIX file
-          mv repo-package.zip release.vsix
+    - name: Rename ZIP to VSIX with prefix and date
+      run: |
+        PREFIX="shadeview-autobuild"
+        NEW_FILENAME="${PREFIX}-${CURRENT_DATE}.vsix"
+        mv repository.zip $NEW_FILENAME
 
-      - name: Tag the release with the date and prefix
-        run: |
-          # Get the current date in YYYY-MM-DD format
-          DATE=$(date +'%Y-%m-%d')
-
-          # Construct the release tag using the custom prefix and date
-          TAG="${RELEASE_PREFIX}-${DATE}"
-
-          # Create a new git tag with the constructed release name
-          git tag -a "$TAG" -m "Release $TAG"
-          git push origin "$TAG"
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v2.2.1
-        with:
-          files: release.vsix
-
-      - name: Upload VSIX to GitHub Release
-        uses: actions/upload-artifact@v4.6.0
-        with:
-          name: release-vsix
-          path: release.vsix
+    - name: Upload VSIX file as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.NEW_FILENAME }}
+        path: ${{ env.NEW_FILENAME }}
