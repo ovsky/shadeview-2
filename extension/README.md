@@ -116,7 +116,7 @@ I would be extremely grateful and any help would be rewarded - maybe not financi
 _You can reach me by my email:_
 przemek.orlowski@outlook.com
 
-And since you're here, you can, take a look on my portfolio:\*
+_And since you're here, you can, take a look on my portfolio:_
 https://orlowski.works/
 
 Many people suggested to create ShadeView Development Discord, if you think it is a great idea, please tell me by this archaic, e-mail, way! :)
