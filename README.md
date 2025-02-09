@@ -1,10 +1,10 @@
-# 🌈 ShadeView - HLSL/GLSL/Compute Shader Support for Visual Studio Code
+# 🌈 ShadeView - Complete Shader Support for Visual Studio Code
 
 ---
 
 ## ✨ Description
 
-**ShadeView 2** for Visual Studio Code provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** and **Compute Shaders** in the **VSC IDE**. Designed specifically for graphics engineers and developers working with shaders, especially in Unity and GODOT - but it also works with every engine you choose!
+**ShadeView 2** for Visual Studio Code provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** and **Compute Shaders** in the **VSC IDE**. Designed specifically for graphics engineers and developers working with shaders, especially in Unity or Godot - but it also works with every engine you choose!
 The plugin enhances your workflow by bringing advanced features for these languages directly into **Visual Studio Code** and/or your favorite **VSC-based** code editor and game engine.
 
 Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview

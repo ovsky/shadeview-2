@@ -5,7 +5,7 @@
 	<Metadata>
 		<Identity Language="en-US" Id="shadeview" Version="2.0.1" Publisher="awwsky" />
 		<DisplayName>ShadeView 2 - Ultimate Shader Tool</DisplayName>
-		<Description xml:space="preserve">ShadeView 2 - First complete HLSL/GLSL [ShaderLab] and Compute Shader support for Visual Studio Code.</Description>
+		<Description xml:space="preserve">ShadeView 2 - Complete Shader Support Tool for Visual Studio Code [HLSL/GLSL [ShaderLab] and Compute].</Description>
 		<Tags>
 			Shader, Snippet, UnityShader, Shaderlab, HLSL, GLSL, Compute,
 			Unity, Godot,

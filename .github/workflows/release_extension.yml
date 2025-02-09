@@ -75,7 +75,7 @@ jobs:
           git push origin "$TAG_NAME"
 
           gh release create "$TAG_NAME" \
-            --title "Auto-build: $TAG_NAME" \
+            --title "Auto-build 2.0: $TAG_NAME" \
             --notes "### **Auto-build of ShadeView 2.0** _vel. @ $(echo $TAG_NAME | sed 's/^v//')_.  <br><br> Result: `${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix`" \
             --draft=false \
             --prerelease=false \
