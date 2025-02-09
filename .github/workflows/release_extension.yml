@@ -40,13 +40,13 @@ jobs:
           openssl dgst -sha256 -sign myprivatekey.pem -out ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig ${{ env.EXTENSION_NAME }}-${current_date}.vsix
 
       - name: Upload VSIX file as artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v3.2.0
         with:
           name: ${{ env.EXTENSION_NAME }}-vsix
           path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix
 
       - name: Upload signature as artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v3.2.0
         with:
           name: ${{ env.EXTENSION_NAME }}-signature
           path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig
