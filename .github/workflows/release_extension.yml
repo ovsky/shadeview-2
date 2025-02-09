@@ -9,7 +9,7 @@ on:
       prefix:
         description: 'Custom prefix for the VSIX file name'
         required: true
-        default: 'my-extension'
+        default: 'shadeview-2.0'
 
 jobs:
   package-release-artifact:
@@ -28,8 +28,7 @@ jobs:
       - name: Set Prefix (Editable within the script)
         id: set-prefix
         run: |
-          # *** EDIT THIS VARIABLE TO CHANGE THE PREFIX ***
-          PREFIX="my-custom-extension"
+          PREFIX="shadeview-2-autobuild"
           echo "prefix=$PREFIX" >> $GITHUB_OUTPUT
 
       - name: Get Latest Tag and Handle Initial State
@@ -76,8 +75,8 @@ jobs:
           git push origin "$TAG_NAME"
 
           gh release create "$TAG_NAME" \
-            --title "Release $TAG_NAME" \
-            --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --title "Auto-build $TAG_NAME" \
+            --notes "Auto-build of ShadeView 2.0 iter. $(echo $TAG_NAME | sed 's/^v//'). Result package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
             --draft=false \
             --prerelease=false \
             "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
