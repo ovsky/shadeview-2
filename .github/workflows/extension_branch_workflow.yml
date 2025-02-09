@@ -13,10 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up GitHub Actions User
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
       - name: Create new branch from folder
         env:
-          TARGET_FOLDER: "extension"  
-          BRANCH_NAME: "extension" 
+          TARGET_FOLDER: "extension"
+          BRANCH_NAME: "extension"
         run: |
           if [ -d "$TARGET_FOLDER" ]; then
             git checkout -b "$BRANCH_NAME"
