@@ -20,7 +20,7 @@ jobs:
 
       - name: Create new branch from folder
         env:
-          TARGET_FOLDER: "extension"
+          TARGET_FOLDER: "./extension"
           BRANCH_NAME: "extension"
         run: |
           if [ -d "$TARGET_FOLDER" ]; then
