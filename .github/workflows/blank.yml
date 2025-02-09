@@ -1,0 +1,29 @@
+name: Create Extension Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create new branch from folder
+        env:
+          TARGET_FOLDER: "extension"  
+          BRANCH_NAME: "extension" 
+        run: |
+          if [ -d "$TARGET_FOLDER" ]; then
+            git checkout -b "$BRANCH_NAME"
+            git add "$TARGET_FOLDER"
+            git commit -m "Created new branch [ $BRANCH_NAME ] from directory [ $TARGET_FOLDER" ]
+            git push origin "$BRANCH_NAME"
+          else
+            echo "Folder $TARGET_FOLDER does not exist. Exiting."
+            exit 1
+          fi
