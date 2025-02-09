@@ -18,26 +18,26 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-      - name: Create new branch from folder
+      - name: Create new Extension Branch
         env:
           TARGET_FOLDER: "extension"
           BRANCH_NAME: "extension"
         run: |
-          if [ -d "$TARGET_FOLDER" ]; then
+            if [ -d "$TARGET_FOLDER" ]; then
             # Create an orphan branch (fresh start)
             git checkout --orphan "$BRANCH_NAME"
 
             # Remove all files from the new branch
             git rm -rf .
 
-            # Restore only the target folder
-            git checkout main -- "$TARGET_FOLDER"
+            # Copy the contents of the target folder to the root of the new branch
+            cp -r "$TARGET_FOLDER"/. .
 
             # Commit and push
-            git add "$TARGET_FOLDER"
-            git commit -m "Created new branch '$BRANCH_NAME' from folder '$TARGET_FOLDER'"
+            git add .
+            git commit -m "Created new branch '$BRANCH_NAME' with contents of folder '$TARGET_FOLDER'"
             git push origin "$BRANCH_NAME"
-          else
+            else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
-          fi
+            fi
