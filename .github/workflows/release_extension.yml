@@ -9,7 +9,6 @@ on:
       version:
         description: 'Version number (e.g., 1.0.0)'
         required: true
-      # Removed 'prefix' from inputs
 
 jobs:
   package-release-artifact:
@@ -31,7 +30,8 @@ jobs:
       - name: Set Prefix (Editable within the script)
         id: set-prefix
         run: |
-          PREFIX="shadeview2"
+          # *** EDIT THIS VARIABLE TO CHANGE THE PREFIX ***
+          PREFIX="my-custom-extension"
           echo "prefix=$PREFIX" >> $GITHUB_OUTPUT
 
       - name: Create ZIP archive and Rename
@@ -46,6 +46,11 @@ jobs:
           name: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
           path: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
           retention-days: 5
+
+      - name: Configure Git User
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
 
       - name: Create Tag and Release (Combined)
         run: |
