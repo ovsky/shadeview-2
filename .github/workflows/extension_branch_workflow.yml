@@ -20,13 +20,22 @@ jobs:
 
       - name: Create new branch from folder
         env:
-          TARGET_FOLDER: "./extension"
+          TARGET_FOLDER: "extension"
           BRANCH_NAME: "extension"
         run: |
           if [ -d "$TARGET_FOLDER" ]; then
-            git checkout -b "$BRANCH_NAME"
+            # Create an orphan branch (fresh start)
+            git checkout --orphan "$BRANCH_NAME"
+
+            # Remove all files from the new branch
+            git rm -rf .
+
+            # Restore only the target folder
+            git checkout main -- "$TARGET_FOLDER"
+
+            # Commit and push
             git add "$TARGET_FOLDER"
-            git commit -m "Created new branch $BRANCH_NAME from directory $TARGET_FOLDER"
+            git commit -m "Created new branch '$BRANCH_NAME' from folder '$TARGET_FOLDER'"
             git push origin "$BRANCH_NAME"
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
