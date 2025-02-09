@@ -69,9 +69,9 @@ jobs:
 
       - name: Create Tag and Release (Combined)
         run: |
-          # Check if the tag already exists
-          if git rev-parse "v${{ steps.increment-version.outputs.new_version }}" >/dev/null 2>&1; then
-            echo "::warning::Tag v${{ steps.increment-version.outputs.new_version }} already exists. Skipping tag and release creation."
+          # Check if the tag already exists locally or remotely
+          if git rev-parse "v${{ steps.increment-version.outputs.new_version }}" >/dev/null 2>&1 || git ls-remote --tags origin "v${{ steps.increment-version.outputs.new_version }}" | grep -q "v${{ steps.increment-version.outputs.new_version }}"; then
+            echo "::warning::Tag v${{ steps.increment-version.outputs.new_version }} already exists (locally or remotely). Skipping tag and release creation."
           else
             git tag -a v${{ steps.increment-version.outputs.new_version }} -m "Release v${{ steps.increment-version.outputs.new_version }}"
             git push origin v${{ steps.increment-version.outputs.new_version }}
