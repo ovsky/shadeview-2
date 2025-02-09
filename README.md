@@ -1,18 +1,19 @@
-# 🌈 ShadeView - HLSL/GLSL Support for Visual Studio Code
+# 🌈 ShadeView - HLSL/GLSL/Compute Shader Support for Visual Studio Code
 
 ---
 
 ## ✨ Description
 
-**ShadeView** for Visual Studio Code provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** in the **VSC IDE**. Designed specifically for developers working with shaders, especially in Unity, this plugin enhances your workflow by bringing advanced features for these languages directly into your favorite code editor.
+**ShadeView 2** for Visual Studio Code provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** and **Compute Shaders** in the **VSC IDE**. Designed specifically for graphics engineers and developers working with shaders, especially in Unity and GODOT - but it also works with every engine you choose!
+The plugin enhances your workflow by bringing advanced features for these languages directly into **Visual Studio Code** and/or your favorite **VSC-based** code editor and game engine.
 
 Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview
 
 ## 🚀 Installation
 
 1. Launch **VSCode**.
-2. Go to the Extensions view (View > Extensions).
-3. Search for **"ShadeView"** or **"HLSL/GLSL Language Support"**.
+2. Go to the Extensions view **(View > Extensions)**.
+3. Search for the **"ShadeView 2"**.
 4. Install the plugin.
 5. Reload VSCode.
 
@@ -23,7 +24,7 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadevie
 ### ⚡ Fast Way:
 
 1. Open a shader file.
-2. From the VSCode bottom bar, select **"ShaderLab" / "ShadeView" / "HLSL/GLSL"** as Language Mode.
+2. From the VSCode bottom bar, where you may see the "Plain Text" label, select **"ShadeView" or "ShadeLab""** as Language Mode.
 
 ### 🛠️ Perfect Way:
 
@@ -31,40 +32,41 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadevie
 2. Press `CTRL + SHIFT + P` to open the command palette.
 3. Select **"Format Document With..."**.
 4. Select **"Configure Default Formatter"**.
-5. Choose **"ShaderLab" / "ShadeView" / "HLSL/GLSL"**.
+5. Choose **"ShadeView" or "ShadeLab""** as Language Mode.
 6. Done! 🎊
 
 ## 🌟 Features
 
 - **🔍 Syntax Highlighting**:  
-  Robust syntax highlighting for HLSL and GLSL, making it easier to read and navigate shader code. It highlights language-specific keywords, types, functions, and more.
+  Robust syntax highlighting for HLSL,GLSL and Compute Shaders, making it easier to read and navigate shader code. It highlights language-specific keywords, types, functions, and more.
 
 - **💡 Autocomplete**:  
-  Intelligent code completion for HLSL and GLSL built right into VSCode. Get suggestions for language constructs and shader functions, reducing time spent on remembering function names and syntax.
+  Intelligent code completion for HLSL, GLSL and Compute Shaders built right into VSCode. Get suggestions for language constructs and shader functions, reducing time spent on remembering function names and syntax.
 
 - **📜 Code Snippets**:  
   Quickly insert common shader code snippets, such as function templates for vertex and fragment shaders, matrix transformations, or texture sampling, to accelerate shader development.
 
 - **📚 Built-In Shaders Documentation**:  
-  Press `F12` to view definitions or right-click and select **Go to Definition** to explore how elements work!
+  Just `hover your mouse over a keyword` and you'll see *exactly what it does*!
+  However, if it's an engine method - press `F12` to see the definition or if it is complicated one, right-click and select **Go to Definition** to see clearly how the method works!
 
 - **❗ Error Highlighting**:  
-  Real-time error detection and linting for HLSL and GLSL code, ensuring you catch issues before compilation, with detailed error messages.
+  Real-time error detection and linting for HLSL, GLSL and Compute Shader code, ensuring you catch issues before compilation, with detailed error messages.
 
 - **🔧 Debugging Support**:  
   Integrated debugging features like stepping through code, inspecting variables, and viewing real-time outputs.
 
 - **🌍 Cross-Platform Support**:  
-  Fully compatible with both Windows and macOS for HLSL and GLSL development, with plans for Linux support in future versions.
+  Fully compatible with both Windows and MacOS for HLSL, GLSL and Compute development, with partial or full support for Linux - depending on which distribution you use.
 
 - **⚙️ Customizable Settings**:  
-  Tailor the plugin’s features to your preferences, including adjusting syntax highlighting, customizing linting rules, or setting up custom snippets.
+  Customize the plugin's features to your preferences, including adjusting syntax highlighting, customizing linting rules, or setting up custom code snippets and more.
 
 ## 🛠️ Work In Progress (WIP)
 
-- **🔮 Integrated In-Editor Unity GLSL/HLSL Shader Preview**:
+- **🔮 Integrated In-Editor GLSL/HLSL Shader Preview**:
 - Test your shader code directly within Visual Studio Code with an integrated GLSL and HLSL compiler, ensuring your shaders are valid and ready for your graphics pipeline!
   **Preview:**
   ![Preview Shader Realtime](https://i.ibb.co/W08rk4P/Screenshot-2024-09-28-203434354453.png)
 
-          Community requested featue! :) Currently hidden but available for plugin supporters.
+          Community requested featue! :) Currently hidden, but easy to find and fully available for plugin supporters.
