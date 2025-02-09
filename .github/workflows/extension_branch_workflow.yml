@@ -36,11 +36,13 @@ jobs:
             git rm -rf .
             # Restore only the target folder
             git checkout main -- "$TARGET_FOLDER"
+            # Unpack all files from the folder to the root and delete the folder
+            mv "$TARGET_FOLDER"/* .  # Move files from the folder to root
+            rm -rf "$TARGET_FOLDER"   # Delete the folder
             # Commit and push (force if the branch already existed)
-            git add "$TARGET_FOLDER"
-            git commit -m "Created or updated branch '$BRANCH_NAME' from folder '$TARGET_FOLDER'"
+            git add .
+            git commit -m "Created or updated branch '$BRANCH_NAME' from folder '$TARGET_FOLDER' and unpacked its files"
             git push origin "$BRANCH_NAME" --force
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
-          fi
