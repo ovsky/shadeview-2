@@ -2,33 +2,15 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "Shaderlab",
   "patterns": [
-    {
-      "include": "#comments"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#numbers"
-    },
-    {
-      "include": "#types"
-    },
-    {
-      "include": "#properties"
-    },
-    {
-      "include": "#macosOrPragma"
-    },
-    {
-      "include": "#unity"
-    },
-    {
-      "include": "#functions"
-    }
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#types" },
+    { "include": "#properties" },
+    { "include": "#macosOrPragma" },
+    { "include": "#unity" },
+    { "include": "#functions" }
   ],
   "repository": {
     "keywords": {
@@ -41,27 +23,17 @@
           "name": "source.macros.shaderlab",
           "match": "(#[\\s]*?define)\\s+?([_A-Za-z0-9]+)",
           "captures": {
-            "1": {
-              "name": "keyword.control.shaderlab"
-            },
-            "2": {
-              "name": "support.class.structures.shaderlab"
-            }
+            "1": { "name": "keyword.control.shaderlab" },
+            "2": { "name": "support.class.structures.shaderlab" }
           }
         },
         {
           "name": "source.shaderlab",
           "match": "(inline)\\s+([_A-Za-z0-9]+)\\s+?([_A-Za-z0-9]+)\\s*\\(",
           "captures": {
-            "1": {
-              "name": "keyword.type.shaderlab"
-            },
-            "2": {
-              "name": "support.class.structures.shaderlab"
-            },
-            "3": {
-              "name": "support.function.shaderlab"
-            }
+            "1": { "name": "keyword.type.shaderlab" },
+            "2": { "name": "support.class.structures.shaderlab" },
+            "3": { "name": "support.function.shaderlab" }
           }
         },
         {
@@ -96,12 +68,8 @@
           "name": "source.shaderlab",
           "match": "(,)\\s*?\\b([Rr]ange|[Ff]loat|[Ii]nt|[Cc]olor|[Vv]ector|2D|3D|[Cc]ube|[Aa]ny)\\b",
           "captures": {
-            "1": {
-              "name": "source.shaderlab"
-            },
-            "2": {
-              "name": "keyword.type.shaderlab"
-            }
+            "1": { "name": "source.shaderlab" },
+            "2": { "name": "keyword.type.shaderlab" }
           }
         }
       ]
@@ -112,54 +80,34 @@
           "name": "source.shaderlab",
           "match": "(\\[)(\\d+)(\\])",
           "captures": {
-            "1": {
-              "name": "source.shaderlab"
-            },
-            "2": {
-              "name": "constant.numeric.shaderlab"
-            },
-            "3": {
-              "name": "source.shaderlab"
-            }
+            "1": { "name": "source.shaderlab" },
+            "2": { "name": "constant.numeric.shaderlab" },
+            "3": { "name": "source.shaderlab" }
           }
         },
         {
           "name": "source.shaderlab",
           "match": "(\\[)[\\w\\d_ \\s]+(\\])",
           "captures": {
-            "1": {
-              "name": "source.shaderlab"
-            },
-            "2": {
-              "name": "source.shaderlab"
-            }
+            "1": { "name": "source.shaderlab" },
+            "2": { "name": "source.shaderlab" }
           }
         },
         {
           "name": "source.shaderlab",
           "match": "(\\[)([\\w\\d_\\s]+)\\(([\\w\\d_\\s]+)\\)(\\])",
           "captures": {
-            "1": {
-              "name": "source.shaderlab"
-            },
-            "2": {
-              "name": "support.function.shaderlab"
-            },
-            "3": {
-              "name": "source.shaderlab"
-            },
-            "4": {
-              "name": "source.shaderlab"
-            }
+            "1": { "name": "source.shaderlab" },
+            "2": { "name": "support.function.shaderlab" },
+            "3": { "name": "source.shaderlab" },
+            "4": { "name": "source.shaderlab" }
           }
         },
         {
           "name": "keyword.struct.shaderlab",
           "match": "struct\\s+?([a-zA-Z0-9_]+)",
           "captures": {
-            "1": {
-              "name": "support.class.structures.shaderlab"
-            }
+            "1": { "name": "support.class.structures.shaderlab" }
           }
         },
         {
@@ -170,33 +118,23 @@
           "name": "source.shaderlab",
           "match": "([_A-Za-z0-9]+)\\s+?([_A-Za-z0-9]+)(\\s+)?\\(",
           "captures": {
-            "1": {
-              "name": "support.class.structures.shaderlab"
-            },
-            "2": {
-              "name": "support.function.shaderlab"
-            }
+            "1": { "name": "support.class.structures.shaderlab" },
+            "2": { "name": "support.function.shaderlab" }
           }
         },
         {
           "name": "source.shaderlab",
           "match": "([_A-Za-z0-9]+)\\s+?([_A-Za-z0-9]+)",
           "captures": {
-            "1": {
-              "name": "support.class.structures.shaderlab"
-            }
+            "1": { "name": "support.class.structures.shaderlab" }
           }
         },
         {
           "name": "source.shaderlab",
           "match": "([_A-Za-z0-9]+)\\s*?<([_A-Za-z0-9]+)>",
           "captures": {
-            "1": {
-              "name": "support.class.structures.shaderlab"
-            },
-            "2": {
-              "name": "keyword.type.shaderlab"
-            }
+            "1": { "name": "support.class.structures.shaderlab" },
+            "2": { "name": "keyword.type.shaderlab" }
           }
         }
       ]
@@ -223,15 +161,11 @@
           "name": "comment.block.shaderlab",
           "begin": "/\\*",
           "beginCaptures": {
-            "0": {
-              "name": "punctuation.definition.comment.shaderlab"
-            }
+            "0": { "name": "punctuation.definition.comment.shaderlab" }
           },
           "end": "\\*/",
           "endCaptures": {
-            "0": {
-              "name": "punctuation.definition.comment.shaderlab"
-            }
+            "0": { "name": "punctuation.definition.comment.shaderlab" }
           }
         }
       ]
@@ -260,24 +194,16 @@
           "begin": "([_A-Za-z0-9]+)(::)([_A-Za-z0-9]+)\\s*",
           "end": "\\(",
           "captures": {
-            "1": {
-              "name": "support.class.structures.shaderlab"
-            },
-            "2": {
-              "name": "keyword.operator.shaderlab"
-            },
-            "3": {
-              "name": "support.function.shaderlab"
-            }
+            "1": { "name": "support.class.structures.shaderlab" },
+            "2": { "name": "keyword.operator.shaderlab" },
+            "3": { "name": "support.function.shaderlab" }
           }
         },
         {
           "name": "meta.method.shaderlab",
           "match": "\\b([A-Za-z0-9_]*)\\b\\s*\\(",
           "captures": {
-            "1": {
-              "name": "support.function.shaderlab"
-            }
+            "1": { "name": "support.function.shaderlab" }
           }
         }
       ]
