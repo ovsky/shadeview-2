@@ -1,12 +1,13 @@
-name: Create VSIX Release
+name: Pack, Rename, and Release
 
 on:
   push:
-    branches:
-      - main 
+    tags:
+      - v*  # Trigger on tag creation (e.g., v1.0.0)
+  workflow_dispatch:  # Allow manual triggering
 
 jobs:
-  pack-and-rename:
+  pack-and-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,20 +24,27 @@ jobs:
 
     - name: Rename ZIP to VSIX with prefix and date
       run: |
-        PREFIX="shadeview-autobuild"
+        PREFIX="my-custom-prefix"  # Replace with your desired prefix
         NEW_FILENAME="${PREFIX}-${CURRENT_DATE}.vsix"
         mv repository.zip $NEW_FILENAME
 
-    - name: Upload VSIX file as artifact
-      uses: actions/upload-artifact@v4.2.0
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this token
       with:
-        name: ${{ env.NEW_FILENAME }}
-        path: ${{ env.NEW_FILENAME }}\
-    
-    - name: Create GitHub Release and Upload Asset
-      uses: softprops/action-gh-release@v2.2.1
+        tag_name: ${{ github.ref }}  # Use the tag that triggered the workflow
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload VSIX file as Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.TAG_NAME }}  # Use the extracted tag name
-        name: Release ${{ env.TAG_NAME }}
-        files: |
-          ${{ env.NEW_FILENAME }}
+        upload_url: ${{ steps.create_release.outputs.upload_url }}  # URL from the create-release step
+        asset_path: ${{ env.NEW_FILENAME }}
+        asset_name: ${{ env.NEW_FILENAME }}
+        asset_content_type: application/zip
