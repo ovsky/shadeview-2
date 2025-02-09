@@ -9,7 +9,7 @@ The plugin enhances your workflow by bringing advanced features for these langua
 
 ## 🌟 Features
 
-![Preview Shader Realtime](./images/data/shader_preview.png)
+![Preview Shader Realtime](https://i.ibb.co/W08rk4P/Screenshot-2024-09-28-203434354453.png)
 
 > Shader Realtime Preview Feature [Available in Preview Version - WIP]
 
@@ -49,7 +49,7 @@ The plugin enhances your workflow by bringing advanced features for these langua
 
 ---
 
-![selection](./images/data/selection.png)
+![selection](https://i.ibb.co/sp0BpHjB/selection.png)
 
 > Documentation Highlight Preview Feature - Explains Every Function
 
