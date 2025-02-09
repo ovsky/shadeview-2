@@ -30,14 +30,13 @@ jobs:
             # Remove all files from the new branch
             git rm -rf .
 
-            # Copy the contents of the target folder to the root of the new branch
-            cp -r "$TARGET_FOLDER"/. .
+            # Move contents of the folder to root
+            mv $TARGET_FOLDER/* ./
 
             # Commit and push
             git add .
-            git commit -m "Created new branch '$BRANCH_NAME' with contents of folder '$TARGET_FOLDER'"
+            git commit -m "Created new branch from $TARGET_FOLDER with unpacked contents"
             git push origin "$BRANCH_NAME"
             else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
             exit 1
-            fi
