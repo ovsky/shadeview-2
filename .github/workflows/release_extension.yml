@@ -1,52 +1,50 @@
-name: Release VSIX Package
+name: Create VSIX Release
 
 on:
   push:
     branches:
-      - main  # Adjust for the branch you want to trigger the action on
+      - main
+
+env:
+  RELEASE_PREFIX: 'shadeview-2-autobuild'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Create ZIP package
+        run: |
+          # Create a ZIP file of the whole repository
+          zip -r repo-package.zip . 
+
+      - name: Rename ZIP to VSIX
+        run: |
+          # Rename the ZIP file to a VSIX file
+          mv repo-package.zip release.vsix
+
+      - name: Create Release
+        uses: ghcr.io/softprops/action-gh-release@v1
         with:
-          node-version: '16'  # Choose the node version that works for your repo
+          files: release.vsix
 
-      - name: Install dependencies
+      - name: Tag the release with the date and prefix
         run: |
-          npm install -g vsce
-          npm install
+          # Get the current date in YYYY-MM-DD format
+          DATE=$(date +'%Y-%m-%d')
 
-      - name: Set extension name
-        id: set_extension_name
-        run: |
-          echo "EXTENSION_NAME=extension" >> $GITHUB_ENV  # Default name "extension", you can override this in the repository's secrets or elsewhere
+          # Construct the release tag using the custom prefix and date
+          TAG="${RELEASE_PREFIX}-${DATE}"
 
-      - name: Package VSIX extension
-        run: |
-          current_date=$(date +'%Y-%m-%d_%H-%M-%S')
-          vsce package --out ${{ env.EXTENSION_NAME }}-${current_date}.vsix
-
-      - name: Sign the extension with date
-        run: |
-          current_date=$(date +'%Y-%m-%d_%H-%M-%S')
-          # Assuming OpenSSL is being used to sign the file
-          openssl dgst -sha256 -sign myprivatekey.pem -out ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig ${{ env.EXTENSION_NAME }}-${current_date}.vsix
-
-      - name: Upload VSIX file as artifact
-        uses: actions/upload-artifact@v4.6.0
+          # Create a new git tag with the constructed release name
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+        
+      - name: Upload VSIX to GitHub Release
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ env.EXTENSION_NAME }}-vsix
-          path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix
-
-      - name: Upload signature as artifact
-        uses: actions/upload-artifact@v4.6.0
-        with:
-          name: ${{ env.EXTENSION_NAME }}-signature
-          path: ${{ env.EXTENSION_NAME }}-${current_date}.vsix.sig
+          name: release-vsix
+          path: release.vsix
