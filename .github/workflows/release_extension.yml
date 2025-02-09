@@ -1,21 +1,21 @@
-name: Create VSIX, Release, and Artifact (on Main Push)
+name: Create VSIX, Release, and Artifact (on Main Push - No Custom Token)
 
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the 'main' branch
-  workflow_dispatch: # Keep workflow_dispatch for manual runs
+      - main
+  workflow_dispatch:
     inputs:
       version:
         description: 'Version number (e.g., 1.0.0) - Only used for manual runs'
-        required: false  # Make version optional, as it's not needed for push triggers
+        required: false
       prefix:
         description: 'Custom prefix for the VSIX file name'
         required: true
         default: 'my-extension'
 
 jobs:
-  build-release-artifact:
+  package-release-artifact:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,13 +26,21 @@ jobs:
         id: get-date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
-      - name: Get version from package.json (or similar)
+      - name: Get Version (Generic - Adapt to your project)
         id: get-version
-        # Adapt this command to your project's structure.  This example is for a Node.js project.
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          # --- Adapt this section to your project's versioning method ---
+          if [ -f VERSION ]; then
+            VERSION=$(cat VERSION)
+          elif [ -f *.csproj ]; then
+             VERSION=$(grep -oP '<Version>\K[^<]+' *.csproj)
+          else
+            echo "::error::Could not determine version.  No version file found."
+            exit 1
+          fi
+          # --- End of adaptable section ---
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-        if: github.event_name == 'push'  # Only run on push events
+        if: github.event_name == 'push'
 
       - name: Determine Version
         id: determine-version
@@ -45,8 +53,9 @@ jobs:
 
       - name: Create ZIP archive and Rename
         run: |
-          zip -r ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ./*
+          zip -r ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ./* -x "*.git*"
           mv ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+        shell: bash
 
       - name: Upload VSIX as Artifact
         uses: actions/upload-artifact@v4
@@ -55,31 +64,20 @@ jobs:
           path: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
           retention-days: 5
 
-      - name: Create Tag
-        id: create_tag
+      - name: Create Tag and Release (Combined)
+        # Combining tag creation and release creation into a single step is more efficient.
         run: |
           git tag -a v${{ steps.determine-version.outputs.version }} -m "Release v${{ steps.determine-version.outputs.version }}"
           git push origin v${{ steps.determine-version.outputs.version }}
 
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
+          gh release create v${{ steps.determine-version.outputs.version }} \
+            --title "Release v${{ steps.determine-version.outputs.version }}" \
+            --notes "Release of version ${{ steps.determine-version.outputs.version }}.\nVSIX package: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --draft=false \
+            --prerelease=false \
+            ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
         env:
+          # The GITHUB_TOKEN is *automatically* provided by GitHub Actions,
+          # and it has sufficient permissions for actions within the same repository.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.determine-version.outputs.version }}
-          release_name: Release v${{ steps.determine-version.outputs.version }}
-          draft: false
-          prerelease: false
-          body: |
-            Release of version ${{ steps.determine-version.outputs.version }}.
-            VSIX package: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
-
-      - name: Upload VSIX as Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
-          asset_name: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
-          asset_content_type: application/vsix
+        shell: bash
