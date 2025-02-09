@@ -35,6 +35,8 @@ The plugin enhances your workflow by bringing advanced features for these langua
 
 ## 🌟 Features
 
+![selection](./images/data/selection.png)
+
 - **🔍 Syntax Highlighting**:  
   Robust syntax highlighting for HLSL,GLSL and Compute Shaders, making it easier to read and navigate shader code. It highlights language-specific keywords, types, functions, and more.
 
@@ -45,7 +47,7 @@ The plugin enhances your workflow by bringing advanced features for these langua
   Quickly insert common shader code snippets, such as function templates for vertex and fragment shaders, matrix transformations, or texture sampling, to accelerate shader development.
 
 - **📚 Built-In Shaders Documentation**:  
-  Just `hover your mouse over a keyword` and you'll see *exactly what it does*!
+  Just `hover your mouse over a keyword` and you'll see _exactly what it does_!
   However, if it's an engine method - press `F12` to see the definition or if it is complicated one, right-click and select **Go to Definition** to see clearly how the method works!
 
 - **❗ Error Highlighting**:  
