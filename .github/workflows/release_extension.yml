@@ -27,7 +27,7 @@ jobs:
           mv repo-package.zip release.vsix
 
       - name: Create Release
-        uses: ghcr.io/softprops/action-gh-release@v2.2.1
+        uses: softprops/action-gh-release@v2.2.1
         with:
           files: release.vsix
 
