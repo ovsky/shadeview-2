@@ -36,7 +36,7 @@ jobs:
     - name: Create GitHub Release and Upload Asset
       uses: softprops/action-gh-release@v2.2.1
       with:
-        tag_name: ${{ github.ref }}  # Use the tag that triggered the workflow
-        name: Release ${{ github.ref }}
+        tag_name: ${{ env.TAG_NAME }}  # Use the extracted tag name
+        name: Release ${{ env.TAG_NAME }}
         files: |
           ${{ env.NEW_FILENAME }}
