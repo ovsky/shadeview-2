@@ -1,67 +1,85 @@
-name: Pack, Rename, and Release
+name: Create VSIX, Release, and Artifact (on Main Push)
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main  # Trigger on pushes to the 'main' branch
+  workflow_dispatch: # Keep workflow_dispatch for manual runs
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0) - Only used for manual runs'
+        required: false  # Make version optional, as it's not needed for push triggers
+      prefix:
+        description: 'Custom prefix for the VSIX file name'
+        required: true
+        default: 'my-extension'
 
 jobs:
-  pack-and-release:
+  build-release-artifact:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0  # Fetch all history for tagging
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set current date
-      id: date
-      run: echo "CURRENT_DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Get current date
+        id: get-date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
-    - name: Create ZIP file
-      run: |
-        zip -r repository.zip . -x '.git/*' -x '.github/*'
+      - name: Get version from package.json (or similar)
+        id: get-version
+        # Adapt this command to your project's structure.  This example is for a Node.js project.
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        if: github.event_name == 'push'  # Only run on push events
 
-    - name: Rename ZIP to VSIX with prefix and date
-      run: |
-        PREFIX="my-custom-prefix"  # Replace with your desired prefix
-        NEW_FILENAME="${PREFIX}-${CURRENT_DATE}.vsix"
-        mv repository.zip $NEW_FILENAME
+      - name: Determine Version
+        id: determine-version
+        run: |
+          if [ "${{ github.event_name }}" == "push" ]; then
+            echo "version=${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          fi
 
-    - name: Get the latest tag
-      id: get_tag
-      run: |
-        # Fetch all tags from the remote
-        git fetch --tags
-        # Get the latest tag (sorted by version)
-        LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
-        if [ -z "$LATEST_TAG" ]; then
-          LATEST_TAG="v0.0.0"  # Default tag if no tags exist
-        fi
-        echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
+      - name: Create ZIP archive and Rename
+        run: |
+          zip -r ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ./*
+          mv ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.zip ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
 
-    - name: Generate new tag
-      id: generate_tag
-      run: |
-        # Extract the version number from the latest tag (e.g., v1.2.3 -> 1.2.3)
-        VERSION=$(echo "$LATEST_TAG" | sed 's/^v//')
-        # Increment the patch version (e.g., 1.2.3 -> 1.2.4)
-        NEW_VERSION=$(echo "$VERSION" | awk -F. '{ $NF = $NF + 1; } END { print $0 }' OFS=.)
-        NEW_TAG="v${NEW_VERSION}"
-        echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+      - name: Upload VSIX as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          path: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          retention-days: 5
 
-    - name: Create and push the new tag
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git tag $NEW_TAG
-        git push origin $NEW_TAG
+      - name: Create Tag
+        id: create_tag
+        run: |
+          git tag -a v${{ steps.determine-version.outputs.version }} -m "Release v${{ steps.determine-version.outputs.version }}"
+          git push origin v${{ steps.determine-version.outputs.version }}
 
-    - name: Create GitHub Release and Upload Asset
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ env.NEW_TAG }}  # Use the newly created tag
-        name: Release ${{ env.NEW_TAG }}
-        files: |
-          ${{ env.NEW_FILENAME }}
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.determine-version.outputs.version }}
+          release_name: Release v${{ steps.determine-version.outputs.version }}
+          draft: false
+          prerelease: false
+          body: |
+            Release of version ${{ steps.determine-version.outputs.version }}.
+            VSIX package: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+
+      - name: Upload VSIX as Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          asset_name: ${{ inputs.prefix }}-${{ steps.get-date.outputs.date }}.vsix
+          asset_content_type: application/vsix
