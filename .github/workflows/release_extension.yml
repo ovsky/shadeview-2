@@ -2,9 +2,8 @@ name: Pack, Rename, and Release
 
 on:
   push:
-    tags:
-      - v*  # Trigger on tag creation (e.g., v1.0.0)
-  workflow_dispatch:  # Allow manual triggering
+    branches:
+      - main  # Trigger on push to the main branch
 
 jobs:
   pack-and-release:
@@ -13,6 +12,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history for tagging
 
     - name: Set current date
       id: date
@@ -28,23 +29,39 @@ jobs:
         NEW_FILENAME="${PREFIX}-${CURRENT_DATE}.vsix"
         mv repository.zip $NEW_FILENAME
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this token
-      with:
-        tag_name: ${{ github.ref }}  # Use the tag that triggered the workflow
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+    - name: Get the latest tag
+      id: get_tag
+      run: |
+        # Fetch all tags from the remote
+        git fetch --tags
+        # Get the latest tag (sorted by version)
+        LATEST_TAG=$(git tag --sort=-v:refname | head -n 1)
+        if [ -z "$LATEST_TAG" ]; then
+          LATEST_TAG="v0.0.0"  # Default tag if no tags exist
+        fi
+        echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
 
-    - name: Upload VSIX file as Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Generate new tag
+      id: generate_tag
+      run: |
+        # Extract the version number from the latest tag (e.g., v1.2.3 -> 1.2.3)
+        VERSION=$(echo "$LATEST_TAG" | sed 's/^v//')
+        # Increment the patch version (e.g., 1.2.3 -> 1.2.4)
+        NEW_VERSION=$(echo "$VERSION" | awk -F. '{ $NF = $NF + 1; } END { print $0 }' OFS=.)
+        NEW_TAG="v${NEW_VERSION}"
+        echo "NEW_TAG=${NEW_TAG}" >> $GITHUB_ENV
+
+    - name: Create and push the new tag
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git tag $NEW_TAG
+        git push origin $NEW_TAG
+
+    - name: Create GitHub Release and Upload Asset
+      uses: softprops/action-gh-release@v1
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}  # URL from the create-release step
-        asset_path: ${{ env.NEW_FILENAME }}
-        asset_name: ${{ env.NEW_FILENAME }}
-        asset_content_type: application/zip
+        tag_name: ${{ env.NEW_TAG }}  # Use the newly created tag
+        name: Release ${{ env.NEW_TAG }}
+        files: |
+          ${{ env.NEW_FILENAME }}
