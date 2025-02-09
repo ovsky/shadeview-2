@@ -84,3 +84,40 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadevie
 6. Done! 🎊
 
 ---
+
+## 😸🫂😸 Cooperation:
+
+_For me, the best payment for a ton of hard work and a long months of development of a **ShadeView 2** would be just people, wanting to help with its development! Just like with the first version - I'm counting on you, people! :)_
+
+**ShadeView 2 - Source Code**: [GitHub Repository: ShadeView 2](https://github.com/ovsky/shadeview-2.0)
+
+You ***do NOT NEED to know programming*** in Node/JS/TS or even any shader language, to support the development! 
+
+#### DEVELOPERS:
+Above all, if youre programmer, you can help by developing translation system HLSL/GLSL (Unity) > Three.JS, which can be found: `.\extensionn\out\src\ShaderRenderer.js`. Alternatively if you are not interested in Unity, you can find your way by adding support for other game engines or frameworks! It is one of my biggest goals for **ShadeView 2** or **3**, to be fully universal. *Eventually, you can suggest better way to render shaders in VSC than clumsy translating code into Three.JS, if you have :)*
+
+#### HELPERS:
+Even *if you do not know much about coding*, or you just do not code in JS/TS, you can help by expanding the shaders documentation JSONs in: `extension\out\src\data`. For example, like finding and adding an any omited by me Shader keyword/function/value/type and entering description of it- *yes it's as simple as it sounds!* - for example, you can find something in Unity or Vulkan documentation, like - for example - `_WorldSpaceCameraPos` and you can simply add found information, that it is: World-Space relative position of the Camera, represented by `float3` :)
+
+*Example:*
+````
+"_WorldSpaceCameraPos": {
+"type": "float3",
+"documentation": "World-Space position of the Camera."
+},
+````
+--- 
+💜😀🩷🫥❤️😈🧡🥶💛
+I would be extremely grateful and any help would be rewarded - maybe not financially, due to the non-profit nature of the project, but by being recognized as one of the co-authors of the **ShadeView 2**! 
+
+*You can reach me by my email:* 
+przemek.orlowski@outlook.com
+And since you're here, you can, take a look on my portfolio:*
+https://orlowski.works/
+
+Many people suggested to create ShadeView Development Discord, if you think it is a great idea, please tell me by this archaic, e-mail, way! :)
+Thanks in advance!
+
+*FYI complete ShadeView 2 documentation will be available soon :)*
+
+---
