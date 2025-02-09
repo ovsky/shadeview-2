@@ -33,7 +33,7 @@ jobs:
       - name: Get Latest Tag and Handle Initial State
         id: get-latest-tag
         run: |
-          git fetch --prune --tags  # Fetch all tags from remote
+          git fetch --prune --tags
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
         shell: bash
@@ -77,13 +77,14 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-
       - name: Create Tag and Release (Combined)
         run: |
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
+          # Robust check for existing tag (local and remote)
           if git rev-parse --quiet --verify "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "$TAG_NAME" > /dev/null 2>&1; then
             echo "::warning::Tag $TAG_NAME already exists.  Attempting to find a unique tag..."
 
+            # Find the next available tag
             i=1
             while true; do
               NEXT_PATCH=$((PATCH + i))
@@ -93,7 +94,7 @@ jobs:
                 break
               fi
               i=$((i + 1))
-              if [[ $i -gt 100 ]]; then
+              if [[ $i -gt 100 ]]; then  # Prevent infinite loop (adjust as needed)
                 echo "::error::Could not find a unique tag after 100 attempts.  Aborting."
                 exit 1
               fi
@@ -106,7 +107,7 @@ jobs:
 
           gh release create "$TAG_NAME" \
             --title "Release $TAG_NAME" \
-            --notes "Release of version ${{ steps.increment-version.outputs.new_version }}.\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
             --draft=false \
             --prerelease=false \
             "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
