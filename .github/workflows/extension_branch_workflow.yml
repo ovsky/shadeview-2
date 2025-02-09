@@ -1,3 +1,4 @@
+
 name: Create Extension Branch
 
 on:
@@ -17,7 +18,6 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-
       - name: Create new branch from folder
         env:
           TARGET_FOLDER: "extension"
@@ -28,13 +28,11 @@ jobs:
             git checkout --orphan "$BRANCH_NAME"
             # Remove all files from the new branch
             git rm -rf .
-            # Copy the contents of the target folder into the root of the new branch
-            cp -r "$TARGET_FOLDER"/* .
-            # Remove the empty extension folder
-            rm -rf "$TARGET_FOLDER"
+            # Restore only the target folder
+            git checkout main -- "$TARGET_FOLDER"
             # Commit and push
-            git add .
-            git commit -m "Created new branch '$BRANCH_NAME' with contents from folder '$TARGET_FOLDER'"
+            git add "$TARGET_FOLDER"
+            git commit -m "Created new branch '$BRANCH_NAME' from folder '$TARGET_FOLDER'"
             git push origin "$BRANCH_NAME"
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
