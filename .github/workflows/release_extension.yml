@@ -26,11 +26,6 @@ jobs:
           # Rename the ZIP file to a VSIX file
           mv repo-package.zip release.vsix
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2.2.1
-        with:
-          files: release.vsix
-
       - name: Tag the release with the date and prefix
         run: |
           # Get the current date in YYYY-MM-DD format
@@ -42,7 +37,12 @@ jobs:
           # Create a new git tag with the constructed release name
           git tag -a "$TAG" -m "Release $TAG"
           git push origin "$TAG"
-        
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2.2.1
+        with:
+          files: release.vsix
+
       - name: Upload VSIX to GitHub Release
         uses: actions/upload-artifact@v4.6.0
         with:
