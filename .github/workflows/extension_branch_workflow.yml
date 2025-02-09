@@ -21,7 +21,7 @@ jobs:
           if [ -d "$TARGET_FOLDER" ]; then
             git checkout -b "$BRANCH_NAME"
             git add "$TARGET_FOLDER"
-            git commit -m "Created new branch [ $BRANCH_NAME ] from directory [ $TARGET_FOLDER" ]
+            git commit -m "Created new branch $BRANCH_NAME from directory $TARGET_FOLDER"
             git push origin "$BRANCH_NAME"
           else
             echo "Folder $TARGET_FOLDER does not exist. Exiting."
