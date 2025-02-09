@@ -28,7 +28,15 @@ jobs:
         mv repository.zip $NEW_FILENAME
 
     - name: Upload VSIX file as artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4.2.0
       with:
         name: ${{ env.NEW_FILENAME }}
-        path: ${{ env.NEW_FILENAME }}
+        path: ${{ env.NEW_FILENAME }}\
+    
+    - name: Create GitHub Release and Upload Asset
+      uses: softprops/action-gh-release@v2.2.1
+      with:
+        tag_name: ${{ github.ref }}  # Use the tag that triggered the workflow
+        name: Release ${{ github.ref }}
+        files: |
+          ${{ env.NEW_FILENAME }}
