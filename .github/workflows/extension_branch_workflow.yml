@@ -32,4 +32,4 @@ jobs:
         run: |
           git add .
           git commit -m "Add files from target folder to $BRANCH_NAME"
-          git push origin $BRANCH_NAME
+          git push --set-upstream origin $BRANCH_NAME
