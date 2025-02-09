@@ -25,9 +25,9 @@ const vscode = require("vscode"),
         scheme: "file"
     },
     VERSION_URL = "https://www.orlowski.works/shadeview/version/",
-    GITHUB_LINK = "https://github.com/ovsky/ShadeView",
-    MARKET_LINK = "https://marketplace.visualstudio.com/items?itemName=awwsky.shadeviewe",
-    VERSION = "2.0.0";
+    GITHUB_LINK = "https://github.com/ovsky/shadeview-2.0",
+    MARKET_LINK = "https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview",
+    VERSION = "2.0.15";
 
 const extensionId = "awwsky.shadeview";
 
