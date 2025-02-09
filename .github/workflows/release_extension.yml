@@ -74,22 +74,18 @@ jobs:
       - name: Create Tag and Release (Combined)
         run: |
           TAG_NAME="v${{ steps.increment-version.outputs.new_version }}"
-          # Robust check for existing tag (local and remote)
-          if git rev-parse --quiet --verify "$TAG_NAME" >/dev/null 2>&1 || git ls-remote --exit-code --tags origin "$TAG_NAME" > /dev/null 2>&1; then
-            echo "::warning::Tag $TAG_NAME already exists. Skipping tag and release creation."
-          else
-            git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-            git push origin "$TAG_NAME"
 
-            gh release create "$TAG_NAME" \
-              --title "Release $TAG_NAME" \
-              --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
-              --draft=false \
-              --prerelease=false \
-              "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
-          fi
+          # Create tag and push
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          git push origin "$TAG_NAME"
+
+          # Create release and upload asset
+          gh release create "$TAG_NAME" \
+            --title "Release $TAG_NAME" \
+            --notes "Release of version $(echo $TAG_NAME | sed 's/^v//').\nVSIX package: ${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix" \
+            --draft=false \
+            --prerelease=false \
+            "${{ steps.set-prefix.outputs.prefix }}-${{ steps.increment-version.outputs.new_version }}-${{ steps.get-date.outputs.date }}.vsix"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
-
-        
