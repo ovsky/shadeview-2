@@ -20,26 +20,26 @@ const vscode = require("vscode"),
     file = require("fs"),
     open = require("opn"),
     SLDiagnosticProvider_1 = require("./SLDiagnosticProvider"),
-    SHADERLAB_MODE = {
-        language: "UnityShader",
+    SHADEVIEW_MODE = {
+        language: "ShadeView",
         scheme: "file"
     },
     VERSION_URL = "https://www.orlowski.works/shadeview/version/",
     GITHUB_LINK = "https://github.com/ovsky/shadeview-2.0",
     MARKET_LINK = "https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview",
-    VERSION = "2.0.15";
+    VERSION = "2.0.25";
 
 const extensionId = "awwsky.shadeview";
 
 function activate(e) {
-    e.subscriptions.push(vscode.languages.registerHoverProvider(SHADERLAB_MODE, new SLHoverProvider_1.default));
-    e.subscriptions.push(vscode.languages.registerCompletionItemProvider(SHADERLAB_MODE, new SLCompletionItemProvider_1.default, ...SLCompletionItemProvider_1.default.triggerCharacters));
-    e.subscriptions.push(vscode.languages.registerSignatureHelpProvider(SHADERLAB_MODE, new SLSignatureHelpProvider_1.default, ...SLSignatureHelpProvider_1.default.triggerChars));
-    e.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(SHADERLAB_MODE, new SLDocumentFormatter_1.default));
-    e.subscriptions.push(vscode.languages.registerDocumentRangeFormattingEditProvider(SHADERLAB_MODE, new SLDocumentRangeFormatter_1.default));
-    e.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(SHADERLAB_MODE, new SLSymbolProvider_1.default));
-    e.subscriptions.push(vscode.languages.registerDefinitionProvider(SHADERLAB_MODE, new SLDefinitionProvider_1.default));
-    e.subscriptions.push(vscode.languages.registerFoldingRangeProvider(SHADERLAB_MODE, new SLFoldingRangeProvider_1.SLFoldingRangeProvider));
+    e.subscriptions.push(vscode.languages.registerHoverProvider(SHADEVIEW_MODE, new SLHoverProvider_1.default));
+    e.subscriptions.push(vscode.languages.registerCompletionItemProvider(SHADEVIEW_MODE, new SLCompletionItemProvider_1.default, ...SLCompletionItemProvider_1.default.triggerCharacters));
+    e.subscriptions.push(vscode.languages.registerSignatureHelpProvider(SHADEVIEW_MODE, new SLSignatureHelpProvider_1.default, ...SLSignatureHelpProvider_1.default.triggerChars));
+    e.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(SHADEVIEW_MODE, new SLDocumentFormatter_1.default));
+    e.subscriptions.push(vscode.languages.registerDocumentRangeFormattingEditProvider(SHADEVIEW_MODE, new SLDocumentRangeFormatter_1.default));
+    e.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(SHADEVIEW_MODE, new SLSymbolProvider_1.default));
+    e.subscriptions.push(vscode.languages.registerDefinitionProvider(SHADEVIEW_MODE, new SLDefinitionProvider_1.default));
+    e.subscriptions.push(vscode.languages.registerFoldingRangeProvider(SHADEVIEW_MODE, new SLFoldingRangeProvider_1.SLFoldingRangeProvider));
 
     SLDiagnosticProvider_1.default.register(e);
     vscode.workspace.onDidChangeTextDocument(handleRealtimeCommentInput);
@@ -51,31 +51,7 @@ function activate(e) {
     });
 
     e.subscriptions.push(disposable);
-
-
-    // e.subscriptions.push(
-    //     vscode.commands.registerCommand('shaderPreview.renderShader', renderShader)
-    // );
-
-    // vscode.commands.registerCommand('shaderPreview.renderShader', renderShader)
-
-    // vscode.commands.registerCommand('shadeView.showPreview', () => {
-    //     const editor = vscode.window.activeTextEditor;
-    //     if (editor) {
-    //         const document = editor.document;
-    //         const text = document.getText();
-
-    //         // Logic to toggle Shader Viewer/Renderer
-    //         vscode.window.showInformationMessage('Shader Viewer - Renderer Toggled!');
-    //     }
-    // });
-
-    // vscode.commands.registerKeybinding({
-    //     command: 'shadeView.showPreview',
-    //     key: 'ctrl+shift+v',
-    //     when: 'editorTextFocus'
-    // });
-    // // Keybinding should be defined in package.json
+    checkExtensionUpdate();
 }
 
 function getInstalledExtensionVersion(extensionId) {

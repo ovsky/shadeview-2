@@ -2,12 +2,12 @@
   "name": "shadeview",
   "displayName": "ShadeView",
   "description": "Complete Support for Shader Programming [HLSL/GLSL/Compute]",
-  "version": "2.0.15",
+  "version": "2.0.25",
   "publisher": "awwsky",
   "icon": "images/icon_512.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ovsky/shadeview-2.git"
+    "url": "https://github.com/ovsky/shadeview-2.0.git"
   },
   "engines": {
     "vscode": "^1.75.0"
@@ -49,14 +49,14 @@
     ],
     "languages": [
       {
-        "id": "UnityShader",
+        "id": "ShadeView",
         "aliases": [
           "ShadeView",
           "ShaderLab",
-          "Shaderlab",
-          "shaderlab",
+          "ShadeView",
+          "shadeview",
           "HLSL/GLSL/Compute",
-          "UnityShader",
+          "ShadeView",
           "ShaderView",
           "Shader"
         ],
@@ -69,22 +69,23 @@
           ".compute",
           ".vfxshader",
           ".surfshader",
-          ".std"
+          ".std",
+          ".shadergraph"
         ],
         "configuration": "./language-configuration.json"
       }
     ],
     "grammars": [
       {
-        "language": "UnityShader",
+        "language": "ShadeView",
         "scopeName": "source.shader",
-        "path": "./syntaxes/shaderlab.tmLanguage.json"
+        "path": "./syntaxes/shadeview.tmLanguage.json"
       }
     ],
     "snippets": [
       {
-        "language": "UnityShader",
-        "path": "./snippets/shaderlab.json"
+        "language": "ShadeView",
+        "path": "./snippets/shadeview.json"
       }
     ],
     "configuration": [
@@ -119,7 +120,7 @@
             "title": "Write tags in single line.",
             "type": "boolean",
             "default": true,
-            "description": "Write tags in single line. Oherwise format tags into multiple lines."
+            "description": "Write tags in single line. Otherwise format tags into multiple lines."
           },
           "formatting.cbuffer": {
             "title": "Indent with UNITY_INSTANCING_CBUFFER and CBUFFER code.",
@@ -127,7 +128,7 @@
             "default": true,
             "description": "Indent with UNITY_INSTANCING_CBUFFER and CBUFFER code."
           },
-          "compiledshader.disable": {
+          "shaderCompile.disable": {
             "title": "Disable time cost features in compiled or generated shader file from Unity.",
             "type": "boolean",
             "default": true,
@@ -162,9 +163,9 @@
   },
   "__metadata": {
     "isApplicationScoped": false,
-    "installedTimestamp": 1736581984847,
+    "installedTimestamp": 1739093100089,
     "pinned": true,
     "source": "vsix",
-    "size": 81060624
+    "size": 81501375
   }
 }
