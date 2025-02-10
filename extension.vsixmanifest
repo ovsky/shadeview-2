@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.15"
+<PackageManifest Version="2.0.25"
 	xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
 	xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Language="en-US" Id="shadeview" Version="2.0.15" Publisher="awwsky" />
+		<Identity Language="en-US" Id="shadeview" Version="2.0.25" Publisher="awwsky" />
 		<DisplayName>ShadeView 2 - Ultimate Shader Tool</DisplayName>
-		<Description xml:space="preserve">ShadeView 2 - First complete HLSL/GLSL [ShaderLab] and Compute Shader support for Visual Studio Code.</Description>
+		<Description xml:space="preserve">ShadeView 2 - Complete Shader Support Tool for Visual Studio Code [HLSL/GLSL (ShaderLab) and Compute].</Description>
 		<Tags>
-			Shader, Snippet, UnityShader, Shaderlab, HLSL, GLSL, Compute,
-			Unity, Godot,
+			Shader, Snippet, UnityShader, Shaderlab, HLSL, GLSL, Compute, Unity, Godot,
 			PixelShader, VertexShader, FragmentShader, SurfaceShader, Pixel, Vertex, Fragment,
 			Surface,
 			Post-Processing, Surface, VFX, ShaderView, Shade, View, 2, ShadeView, ShadeView 2,
+			Preview,
 			shaderlab, __ext_shader, __ext_cginc, __ext_glslinc, __ext_hlsl, __ext_cg,
 			__ext_compute, __ext_vfxshader, __ext_surfshader, __ext_std
 		</Tags>
-		<Categories>Programming Languages</Categories>
-		<GalleryFlags>Public</GalleryFlags>
+		<Categories>Programming Languages, Snippets, Education, Testing, Visualization, Extension
+			Packs, Other</Categories>
+		<GalleryFlags>Preview, Public</GalleryFlags>
 
 		<Properties>
 			<Property Id="Microsoft.VisualStudio.Code.Engine" Value="^1.75.0" />
