@@ -25,8 +25,9 @@
 			<Property Id="Microsoft.VisualStudio.Code.ExtensionKind" Value="workspace" />
 			<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
 			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
+			<Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/ovsky/shadeview-2.0.git" />
 		</Properties>
-
+	    <License>LICENSE</License>
 		<Icon>extension/images/icon_512.png</Icon>
 	</Metadata>
 	<Installation>
@@ -34,14 +35,10 @@
 	</Installation>
 	<Dependencies />
 	<Assets>
-		<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json"
-			Addressable="true" />
-		<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md"
-			Addressable="true" />
-		<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog"
-			Path="extension/CHANGELOG.md" Addressable="true" />
-		<Asset Type="Microsoft.VisualStudio.Services.Icons.Default"
-			Path="extension/images/icon_512.png"
-			Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Content.Changelog" Path="extension/CHANGELOG.md" Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="LICENSE" Addressable="true" />
+		<Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/icon_512.png" Addressable="true" />
 	</Assets>
 </PackageManifest>
