@@ -15,8 +15,7 @@
 			shaderlab, __ext_shader, __ext_cginc, __ext_glslinc, __ext_hlsl, __ext_cg,
 			__ext_compute, __ext_vfxshader, __ext_surfshader, __ext_std
 		</Tags>
-		<Categories>Programming Languages, Snippets, Education, Testing, Visualization, Extension
-			Packs, Other</Categories>
+		<Categories>Programming Languages, Snippets, Education, Testing, Visualization, Other</Categories>
 		<GalleryFlags>Preview, Public</GalleryFlags>
 
 		<Properties>
