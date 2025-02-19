@@ -1,13 +1,20 @@
-# 🌈 ShadeView - Complete Shader Support for Visual Studio Code
+# 🌈 ShadeView 2.0 - Complete Shader Support for Visual Studio Code
+
+[![Build and Deploy](https://github.com/ovsky/shadeview-2.0/actions/workflows/release_extension.yml/badge.svg)](https://github.com/ovsky/shadeview-2.0/releases/latest)
+[![Deploy Branch](https://github.com/ovsky/shadeview-2.0/actions/workflows/extension_branch_workflow.yml/badge.svg)](https://github.com/ovsky/shadeview-2.0/tree/extension_only/)
+![Latest Version](https://img.shields.io/badge/Latest_Release-2.0.25^@0.16-blue) ![License](https://img.shields.io/badge/License-MIT-purple) 
 
 ---
 
-## ✨ Description
+## ✨ ShadeView 2 - Description
 
-**ShadeView 2** for Visual Studio Code provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** and **Compute Shaders** in the **VSC IDE**. Designed specifically for graphics engineers and developers working with shaders, especially in Unity or Godot - but it also works with every engine you choose!
+**ShadeView 2** - for _Visual Studio Code_ provides the first-ever comprehensive support for writing **HLSL** (High-Level Shading Language) and **GLSL** (OpenGL Shading Language), along with **ShaderLab** and **Compute Shaders** in the **VSC IDE**. Designed specifically for graphics engineers and developers working with shaders, especially in Unity or Godot - but it also works with every engine you choose!
 The plugin enhances your workflow by bringing advanced features for these languages directly into **Visual Studio Code** and/or your favorite **VSC-based** code editor and game engine.
 
-Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview
+
+#### 📦 _Marketplace:_ https://marketplace.visualstudio.com/items?itemName=awwsky.shadeview
+
+---
 
 ## 🌟 Features
 
@@ -85,11 +92,15 @@ Marketplace: https://marketplace.visualstudio.com/items?itemName=awwsky.shadevie
 
 ---
 
-## 😸🫂😸 Cooperation:
+## 😸🫂😸 Cooperation
 
 _For me, the best payment for a ton of hard work and a long months of development of a **ShadeView 2** would be just people, wanting to help with its development! Just like with the first version - I'm counting on you, people! :)_
 
+---
+
 **ShadeView 2 - Source Code**: [GitHub Repository: ShadeView 2](https://github.com/ovsky/shadeview-2.0)
+
+---
 
 You **_do NOT NEED to know programming_** in Node/JS/TS or even any shader language, to support the development!
 
@@ -97,11 +108,11 @@ You **_do NOT NEED to know programming_** in Node/JS/TS or even any shader langu
 
 Above all, if youre programmer, you can help by developing translation system HLSL/GLSL (Unity) > Three.JS, which can be found: `.\extensionn\out\src\ShaderRenderer.js`. Alternatively if you are not interested in Unity, you can find your way by adding support for other game engines or frameworks! It is one of my biggest goals for **ShadeView 2** or **3**, to be fully universal. _Eventually, you can suggest better way to render shaders in VSC than clumsy translating code into Three.JS, if you have :)_
 
-#### HELPERS:
+  #### SUPPORTERS:
 
 Even _if you do not know much about coding_, or you just do not code in JS/TS, you can help by expanding the shaders documentation JSONs in: `extension\out\src\data`. For example, like finding and adding an any omited by me Shader keyword/function/value/type and entering description of it- _yes it's as simple as it sounds!_ - for example, you can find something in Unity or Vulkan documentation, like - for example - `_WorldSpaceCameraPos` and you can simply add found information, that it is: World-Space relative position of the Camera, represented by `float3` :)
 
-_Example:_
+`Example:`
 
 ```
 "_WorldSpaceCameraPos": {
@@ -113,17 +124,21 @@ _Example:_
 ---
 
 💜😀🩷🫥❤️😈🧡🥶💛
-I would be extremely grateful and any help would be rewarded - maybe not financially, due to the non-profit nature of the project, but by being recognized as one of the co-authors of the **ShadeView 2**!
 
-_You can reach me by my email:_
+> I would be extremely grateful and any help would be rewarded - maybe not financially, due to the non-profit nature of the project, but by being recognized as one of the co-authors of the **ShadeView 2**!
+
+ _You can reach me by my email:_
 przemek.orlowski@outlook.com
 
-_And since you're here, you can, take a look on my portfolio:_
+
+> Many people suggested to create ShadeView Development Discord, if you think it is a great idea, please tell me by this archaic, e-mail, way! :)
+
+> Thanks in advance!
+
+ _And since you're here, you can, take a look on my portfolio:_
 https://orlowski.works/
 
-Many people suggested to create ShadeView Development Discord, if you think it is a great idea, please tell me by this archaic, e-mail, way! :)
-Thanks in advance!
+> _P.S. complete ShadeView 2 documentation will be available soon™ :)_
 
-_FYI complete ShadeView 2 documentation will be available soon :)_
 
 ---
