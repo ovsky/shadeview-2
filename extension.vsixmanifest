@@ -27,7 +27,6 @@
 			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
 			<Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/ovsky/shadeview-2.0.git" />
 			<Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/ovsky/shadeview-2.0.git" />
-			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
 		</Properties>
 	    <License>LICENSE</License>
 		<Icon>extension/images/icon_512.png</Icon>
