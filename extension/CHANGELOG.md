@@ -2,7 +2,7 @@
 
 ShadeView - First complete HLSL/GLSL [and ShaderLab] support for Visual Studio Code.
 
-### Version 2.0.1
+### Version 2.0.3
 
 ### Minor:
 

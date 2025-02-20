@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PackageManifest Version="2.0.25"
+<PackageManifest Version="2.0.3"
 	xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
 	xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Language="en-US" Id="shadeview" Version="2.0.25" Publisher="awwsky" />
+		<Identity Language="en-US" Id="shadeview" Version="2.0.3" Publisher="awwsky" />
 		<DisplayName>ShadeView 2 - Ultimate Shader Tool</DisplayName>
 		<Description xml:space="preserve">ShadeView 2 - Complete Shader Support Tool for Visual Studio Code [HLSL/GLSL (ShaderLab) and Compute].</Description>
 		<Tags>
@@ -26,6 +26,8 @@
 			<Property Id="Microsoft.VisualStudio.Code.LocalizedLanguages" Value="" />
 			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
 			<Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/ovsky/shadeview-2.0.git" />
+			<Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/ovsky/shadeview-2.0.git" />
+			<Property Id="Microsoft.VisualStudio.Services.GitHubFlavoredMarkdown" Value="true" />
 		</Properties>
 	    <License>LICENSE</License>
 		<Icon>extension/images/icon_512.png</Icon>
